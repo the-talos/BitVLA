@@ -1,5 +1,6 @@
 # BitVLA: 1-bit Vision-Language-Action Models for Robotics Manipulation
 
+- **September 2026:** BitVLA is accepted by CoRL 2026!
 - **March 2026:** 🚀 We have released the **pre-trained BitVLA model**! The evaluation results in the table below have been updated to reflect the performance after pre-training. You can try our new [pre-trained model](https://huggingface.co/lxsy/bitvla-bf16) out-of-the-box.
 - June 2025: [BitVLA: 1-bit Vision-Language-Action Models for Robotics Manipulation](https://arxiv.org/abs/2506.07530)
 
