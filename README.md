@@ -175,6 +175,16 @@ python experiments/robot/libero/run_libero_eval_bitnet.py \
     --model_family "bitnet" 
 ```
 
+### How to run the same on Intel's XPU
+
+Policy inference (model load and action prediction) runs on Intel GPUs through PyTorch XPU. In the install steps above, install the XPU build of PyTorch in place of the CUDA 12.4 one, and keep the rest (`pip install -e transformers`, `pip install -e openvla-oft/`, `pip install -e bitvla/`):
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/xpu
+```
+
+The device is detected automatically (XPU, then CUDA, then CPU), so the loading and action code used by the evaluation command above runs unchanged. Use `ZE_AFFINITY_MASK=0` in place of `CUDA_VISIBLE_DEVICES=0` to pick the card. The bundled `transformers` fork runs the 1.58-bit and 1-bit layers as plain PyTorch operations, and uses eager attention by default (flash attention is not required), so no extra kernels are needed. The LIBERO simulator itself still needs a CUDA machine (it relies on EGL rendering), and `lmms-eval` was not covered.
+
 ## Acknowledgement
 
 This repository is built using [LMM-Eval](https://github.com/EvolvingLMMs-Lab/lmms-eval), [the HuggingFace&#39;s transformers](https://github.com/huggingface/transformers), [OpenVLA-OFT](https://github.com/moojink/openvla-oft) and [OpenVLA](https://github.com/openvla/openvla).

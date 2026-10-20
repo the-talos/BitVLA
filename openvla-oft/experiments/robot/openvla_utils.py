@@ -27,6 +27,7 @@ from prismatic.extern.hf.processing_prismatic import PrismaticImageProcessor, Pr
 from prismatic.models.action_heads import DiffusionActionHead, L1RegressionActionHead
 from prismatic.models.film_vit_wrapper import FiLMedPrismaticVisionBackbone
 from prismatic.models.projectors import NoisyActionProjector, ProprioProjector
+from prismatic.util.device import default_device
 from prismatic.vla.constants import (
     ACTION_DIM,
     ACTION_PROPRIO_NORMALIZATION_TYPE,
@@ -36,7 +37,7 @@ from prismatic.vla.datasets.rlds.utils.data_utils import NormalizationType
 # Initialize important constants
 DATE = time.strftime("%Y_%m_%d")
 DATE_TIME = time.strftime("%Y_%m_%d-%H_%M_%S")
-DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
+DEVICE = default_device()  # XPU, then CUDA, then CPU
 OPENVLA_IMAGE_SIZE = 224  # Standard image size expected by OpenVLA
 
 # Configure NumPy print settings
@@ -249,7 +250,7 @@ def load_component_state_dict(checkpoint_path: str) -> Dict[str, torch.Tensor]:
     Returns:
         Dict: The processed state dictionary for loading
     """
-    state_dict = torch.load(checkpoint_path, weights_only=True)
+    state_dict = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
 
     # If the component was trained with DDP, elements in the state dict have prefix "module." which we must remove
     new_state_dict = {}

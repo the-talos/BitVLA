@@ -18,6 +18,7 @@ from bitvla.constants import (
     BITNET_DEFAULT_IM_END_TOKEN,
     BITNET_DEFAULT_IMAGE_TOKEN,
 )
+from prismatic.util.device import default_device
 from experiments.robot.openvla_utils import (
     model_is_on_hf_hub,
     update_auto_map,
@@ -27,7 +28,7 @@ from experiments.robot.openvla_utils import (
     normalize_proprio,
 )
 
-DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
+DEVICE = default_device()  # XPU, then CUDA, then CPU
 BITNET_VLA_IMAGE_SIZE = 224
 from bitvla.dataset.bitvla_transform import llava_to_openai
 
